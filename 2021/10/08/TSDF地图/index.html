@@ -27,12 +27,14 @@
 <meta property="og:site_name" content="James·GZL的博客">
 <meta property="og:description" content="我爱TSDF，你呢？">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/08/TSDF%E5%9C%B0%E5%9B%BE/image-20211008152020823.png">
 <meta property="article:published_time" content="2021-10-08T05:37:27.000Z">
-<meta property="article:modified_time" content="2021-10-08T06:59:26.032Z">
+<meta property="article:modified_time" content="2021-10-08T07:34:03.431Z">
 <meta property="article:author" content="James·GZL">
 <meta property="article:tag" content="分享">
 <meta property="article:tag" content="TSDF地图">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jamesgzl.github.io/2021/10/08/TSDF%E5%9C%B0%E5%9B%BE/image-20211008152020823.png">
 
 
 <link rel="canonical" href="https://jamesgzl.github.io/2021/10/08/TSDF%E5%9C%B0%E5%9B%BE/">
@@ -112,7 +114,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -125,6 +127,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tsdf%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text"> TSDF地图构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#what-is-tsdf-map"><span class="nav-number">1.1.</span> <span class="nav-text"> What is TSDF Map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tsdf%E5%9C%B0%E5%9B%BE%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text"> TSDF地图初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3%E4%BB%80%E4%B9%88%E6%98%AFtsdf%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text"> 初步了解什么是tsdf函数</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -236,7 +239,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-10-08 13:37:27 / 修改时间：14:59:26" itemprop="dateCreated datePublished" datetime="2021-10-08T13:37:27+08:00">2021-10-08</time>
+      <time title="创建时间：2021-10-08 13:37:27 / 修改时间：15:34:03" itemprop="dateCreated datePublished" datetime="2021-10-08T13:37:27+08:00">2021-10-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -259,7 +262,67 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="tsdf地图构建"><a class="markdownIt-Anchor" href="#tsdf地图构建"></a> TSDF地图构建</h1>
+<h2 id="what-is-tsdf-map"><a class="markdownIt-Anchor" href="#what-is-tsdf-map"></a> What is TSDF Map</h2>
+<ul>
+<li>
+<p><strong>TSDF</strong>的主要作用是进行三维场景在计算机中的重建，著名的<strong>Kinfusion</strong>就是采用<strong>TSDF</strong>来构建空间体素的，通过求去每个体素的值，然后再使用之前提到的<strong>Marching Cube</strong>来提取表面的</p>
+</li>
+<li>
+<p>这个地图存储形式在计算是对算力的需求比较大，因为每一次更新地图时都需要对所有地图中的体素点进行一次<strong>tsdf</strong>函数的运算</p>
+</li>
+<li>
+<p>如果想要创建一个<strong>TSDF Map</strong>，就一定要弄清楚两个事情：</p>
+<ul>
+<li><strong>sdf(x)</strong></li>
+<li><strong>tsdf(x)</strong></li>
+</ul>
+</li>
+<li>
+<p>上面这两个函数在<strong>TSDF Map</strong>构建的过程中具有至关重要的作用</p>
+</li>
+</ul>
+<p>为了梳理自己关于这部分的学习思路，特此撰写博客。</p>
+<h2 id="tsdf地图初始化"><a class="markdownIt-Anchor" href="#tsdf地图初始化"></a> TSDF地图初始化</h2>
+<p>TSDF地图的创建由许多个voxel拼接而成，表现形式的话就是下面这幅图</p>
+<img src="/2021/10/08/TSDF%E5%9C%B0%E5%9B%BE/image-20211008152020823.png" class="" title="image-20211008152020823">
+<p>这个图片在网上很多地方都被引用了，在这个地图上的每一个小方块就是我们说的<strong>voxel</strong>。</p>
+<p>下面举个例子来说明整个地图的创建流程：</p>
+<ul>
+<li>
+<p>比如现实世界地图大小为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>5</mn><mi>m</mi><mo>×</mo><mn>5</mn><mi>m</mi><mo>×</mo><mn>5</mn><mi>m</mi></mrow><annotation encoding="application/x-tex">5m \times 5m \times 5m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">5</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">5</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span><span class="mord mathdefault">m</span></span></span></span>，我们想要创建一个包含<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>100</mn><mo>×</mo><mn>100</mn><mo>×</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">100 \times 100 \times 100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span></span></span></span>个<strong>voxel</strong>的TSDF地图，那么就要求</p>
+<ul>
+<li>每一个voxel的size对应为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0.05</mn><mi>m</mi><mo>×</mo><mn>0.05</mn><mi>m</mi><mo>×</mo><mn>0.05</mn><mi>m</mi></mrow><annotation encoding="application/x-tex">0.05m \times 0.05m \times 0.05m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">5</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">5</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">5</span><span class="mord mathdefault">m</span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p>在确定好了size之后，和相机模型投影到像素平面需要<strong>内参矩阵K</strong>一样，TSDF地图原点相对真实世界原点也是存在偏移的，也就说</p>
+<ul>
+<li>需要设定TSDF地图中的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(0, 0, 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span>坐标体素对应真实世界坐标中的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x_0, y_0, z_0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p>反过来想，那TSDF地图中一个体素点<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><msub><mi>v</mi><mi>x</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>y</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>z</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(v_x, v_y, v_z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>对应真实世界坐标系中的那个点呢？</p>
+<ul>
+<li>很简单啦，其实只要把上面那个投影两个世界的原点过程反过来，再加上考虑一个voxel的size就可以<p class='katex-block katex-error' title='ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{cases}
+…'>\begin{equation}
+\begin{cases}
+v_x = \frac{x - x_0}{0.05m(voxel.size.x)} \\
+v_y = \frac{y - y_0}{0.05m(voxel.size.y)} \\
+v_z = \frac{z - z_0}{0.05m(voxel.size.z)}
+\end{cases}
+\end{equation}
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>最后重要的一点！！！</strong>：比如我们要创建一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo>×</mo><mi>W</mi><mo>×</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">L \times W \times H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span></span></span></span>的TSDF地图，那我们一定会拿到一个大小为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo>×</mo><mi>W</mi><mo>×</mo><mi>H</mi><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">L \times W \times H \times 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>的地图，这是因为在TSFD地图中我们需要考虑两个值，分别为<strong>rgb</strong>和<strong>tsdf</strong>，就是我们要分别为这两个值的存储而创建两个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo>×</mo><mi>W</mi><mo>×</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">L \times W \times H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span></span></span></span>的地图。</p>
+</li>
+</ul>
+<h2 id="初步了解什么是tsdf函数"><a class="markdownIt-Anchor" href="#初步了解什么是tsdf函数"></a> 初步了解什么是tsdf函数</h2>
+
     </div>
 
     
