@@ -27,12 +27,14 @@
 <meta property="og:site_name" content="James·GZL的博客">
 <meta property="og:description" content="我爱VINS-MONO，你呢？">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/09/30/VINS-MONO/image-20211009121503639.png">
 <meta property="article:published_time" content="2021-09-30T02:54:53.000Z">
-<meta property="article:modified_time" content="2021-10-01T14:33:11.321Z">
+<meta property="article:modified_time" content="2021-10-09T05:48:01.130Z">
 <meta property="article:author" content="James·GZL">
 <meta property="article:tag" content="分享">
 <meta property="article:tag" content="VINS-MONO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jamesgzl.github.io/2021/09/30/VINS-MONO/image-20211009121503639.png">
 
 
 <link rel="canonical" href="https://jamesgzl.github.io/2021/09/30/VINS-MONO/">
@@ -125,7 +127,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#paper-reading-of-vins-mono"><span class="nav-number">1.</span> <span class="nav-text"> Paper Reading of VINS-MONO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introdunction-of-vins-mono"><span class="nav-number">1.1.</span> <span class="nav-text"> Introdunction of VINS-MONO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-background-of-current-field-in-monocular-vision-only-system"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 01 Background of Current Field in Monocular Vision-Only System</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#paper-reading-of-vins-mono"><span class="nav-number">1.</span> <span class="nav-text"> Paper Reading of VINS-MONO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introdunction-of-vins-mono"><span class="nav-number">1.1.</span> <span class="nav-text"> Introdunction of VINS-MONO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overview-of-vins-mono"><span class="nav-number">1.2.</span> <span class="nav-text"> Overview of VINS-MONO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#measurement-preprocessing-of-vins-mono"><span class="nav-number">1.3.</span> <span class="nav-text"> Measurement Preprocessing of VINS-MONO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vision-processing-front-end%E5%89%8D%E7%AB%AF%E8%A7%86%E8%A7%89%E5%A4%84%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text"> Vision Processing Front-end(前端视觉处理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#imu-pre-integrationimu%E9%A2%84%E6%95%B4%E5%90%88"><span class="nav-number">1.3.2.</span> <span class="nav-text"> IMU Pre-integration(IMU预整合？)</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -142,7 +144,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +245,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-01 22:33:11" itemprop="dateModified" datetime="2021-10-01T22:33:11+08:00">2021-10-01</time>
+        <time title="修改时间：2021-10-09 13:48:01" itemprop="dateModified" datetime="2021-10-09T13:48:01+08:00">2021-10-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -268,25 +270,14 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="paper-reading-of-vins-mono"><a class="markdownIt-Anchor" href="#paper-reading-of-vins-mono"></a> Paper Reading of VINS-MONO</h1>
 <h2 id="introdunction-of-vins-mono"><a class="markdownIt-Anchor" href="#introdunction-of-vins-mono"></a> Introdunction of VINS-MONO</h2>
-<h3 id="01-background-of-current-field-in-monocular-vision-only-system"><a class="markdownIt-Anchor" href="#01-background-of-current-field-in-monocular-vision-only-system"></a> 01 Background of Current Field in Monocular Vision-Only System</h3>
-<ul>
-<li>Approaches that use only a monocular camera(Camera Vision-Only System) comes into computer-vision field <strong>due to its such featrues as follows</strong>
-<ul>
-<li>small size</li>
-<li>low-cost</li>
-<li>easy hardware setup</li>
-<li><strong>However</strong>, Incapable of recovering <strong>the metric scale</strong> limits its application!</li>
-</ul>
-</li>
-<li>目前，仅仅使用一个单目相机的视觉系统在计算视觉领域得到了非常广泛的应用，其具有以下特点
+<p>目前，仅仅使用一个单目相机的视觉系统在计算视觉领域得到了非常广泛的应用，其具有以下特点</p>
 <ul>
 <li>规格小</li>
 <li>成本低</li>
 <li>安装方便</li>
 <li>但是，单目系统在视觉估计方面存在深度缺失的问题</li>
 </ul>
-</li>
-<li>一个叫做IMU(Inertial-Measurement Unit)辅助工具在单目视觉系统得到了非常广泛地应用
+<p>一个叫做IMU(Inertial-Measurement Unit)辅助工具在单目视觉系统得到了非常广泛地应用</p>
 <ul>
 <li>融合系统的名字：Visual-Inertial System(VINS)</li>
 <li>IMU的优势：
@@ -295,11 +286,68 @@
 <li>能够在视觉跟踪丢失(由于光照改变(illumination change)、纹理特征不明显(texture-less area)、运动模糊(motion blur))的时候，填补丢失这部分的运动估计</li>
 </ul>
 </li>
-<li>VINS的应用领域：SLAM、AR、VR</li>
+</ul>
+<p><strong>However</strong>，对于这个<strong>VINS</strong>系统还存在着很多的缺点</p>
+<ul>
+<li>VINS不能够从一个静止的条件下启动，而是需要从一个未知移动状态开始</li>
+<li>在系统初始化时，VINS也面临着高度非线性等问题</li>
+<li>IMU和Camera的相对外参标定也是一个需要解决的问题</li>
+</ul>
+<p>为了解决上面这些问题，<strong>VINS-MONO</strong>就诞生了，一个鲁棒、通用的单目visual-inertial状态估计器。同时这个系统在处理数据方面是全程<strong>tightly-coupled</strong>，而且在<strong>imu-camera</strong>外参标定以及<strong>imu</strong>去漂移这两方面都是在线实现的。</p>
+<h2 id="overview-of-vins-mono"><a class="markdownIt-Anchor" href="#overview-of-vins-mono"></a> Overview of VINS-MONO</h2>
+<img src="/2021/09/30/VINS-MONO/image-20211009121503639.png" class="" title="image-20211009121503639">
+<p>上面这个就是VINS-MONO的整个系统框架，我们按照顺序来梳理一遍</p>
+<ol>
+<li>Sect. IV Measurement Preprocessing 数据的预处理</li>
+<li>Sect. V Initialization 数据的初始化</li>
+<li>Sect. VI and VII Local VIO with Relocalization数据紧耦合与回环重定位</li>
+<li>Sect VIII Global Pose Graph Optimization图优化去除漂移</li>
+</ol>
+<p>在正式开始介绍之前，还需要一些符号和定义的声明</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{cases}
+…'>\begin{equation}
+\begin{cases}
+( \cdot )^{w} \space is \space the \space world \space frame. \\
+( \cdot )^{b} \space is \space the \space body \space frame. (also \space IMU \space frame)\\
+( \cdot )^{c} \space is \space the \space camera \space frame. \\
+Rotation \space matrics \space \textbf{R} \space and \space Hamilton \space quaternions \space \textbf{q} \space both \space represent \space rotation.\\
+\textbf{q}_w^b \space and \space \textbf{p}_w^b \space are \space rotation \space and \space translation \space from \space \textbf {body} \space \textbf{frame} \space to \space \textbf{world} \space \textbf{frame}. 
+\end{cases}
+\end{equation}
+</p>
+<h2 id="measurement-preprocessing-of-vins-mono"><a class="markdownIt-Anchor" href="#measurement-preprocessing-of-vins-mono"></a> Measurement Preprocessing of VINS-MONO</h2>
+<h3 id="vision-processing-front-end前端视觉处理"><a class="markdownIt-Anchor" href="#vision-processing-front-end前端视觉处理"></a> Vision Processing Front-end(前端视觉处理)</h3>
+<p>这里使用到了<strong>KLT稀疏光流算法</strong>(KLT sparse optical flow algorithm)取提取特征点features，在提取特征时还用到了下面的一些操作</p>
+<ul>
+<li>
+<p>每张图片所有特征中提取100-300个<strong>corner fearures</strong></p>
+</li>
+<li>
+<p>这些<strong>corner features</strong>使得特征点在图像中处于一个均匀分布的状态(uniform feature distribution)</p>
+<ul>
+<li>多说一句，上面这个uniform distribution的实现是通过设定两个相邻feature的最小sparation of pixels去实现(因为是光流，所以这个就是保证features不扎堆的意思)</li>
 </ul>
 </li>
-<li>A growing trend of assisting the monocular vision system comes into the field of SLAM(well … AR VR)</li>
+<li>
+<p>通过<strong>RANSAC</strong>算法去除一些外点features(outliers)，这一步在论文中是通过匹配两幅图之间的<strong>Fundamental Matrix</strong>利用点到极线的距离进行筛选的(我记得OpenCV里面的那个findfundamental函数里面就自带ransac)</p>
+</li>
+<li>
+<p>还要筛选<strong>Keyframe</strong>，会遵循两个准则(<strong>citeria</strong>)</p>
+<ol>
+<li>
+<p>利用平均视差(average parallax)，对当前keyframe和最新得到的keyframe在计算平均视差，如果超出了设定的阈值，就会丢弃当前的keyframe，并且把最新的这个keyframe作为当前keyframe(current frame)</p>
+<p>这种方法有一个问题，就是当<strong>仅旋转</strong>运动发生时，无法估计相机的F矩阵，从而导致features等无法获取，这里论文中说到用一个IMU短时积分(short-time integration)的方式相机的rotation</p>
+<p><strong>注意</strong>，这里获取的rotation和translation都是用来筛选keyframe的，也就是说这个rotation、translation的好坏并不会影响系统的定位精度，充其量就是选了一个<strong>suboptimal</strong>(次优的)keyframe，无伤大雅</p>
+</li>
+<li>
+<p>利用跟踪质量(Tracking Quality)评价当前这个image，当跟踪光流点的数量降低到一定阈值的时候，再不更新keyframe就会发生tracking loss的事件啦！因此为了防止这个事情发生，当跟踪点主动降低到一定程度，我们就以这个时刻的image为一个新的keyframe，重新计算optical flow，开启新的tracking。</p>
+</li>
+</ol>
+</li>
 </ul>
+<h3 id="imu-pre-integrationimu预整合"><a class="markdownIt-Anchor" href="#imu-pre-integrationimu预整合"></a> IMU Pre-integration(IMU预整合？)</h3>
+<p>等待更新ing。。。</p>
 
     </div>
 
