@@ -20,27 +20,35 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"jamesgzl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="I&#39;m trying to save the world!">
+<meta name="description" content="我爱VIO，你呢？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceres_tutorial_BA">
-<meta property="og:url" content="https://jamesgzl.github.io/2021/10/08/ceres-tutorial-BA/index.html">
+<meta property="og:title" content="手写VIO第二章作业">
+<meta property="og:url" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/index.html">
 <meta property="og:site_name" content="James·GZL的博客">
-<meta property="og:description" content="I&#39;m trying to save the world!">
+<meta property="og:description" content="我爱VIO，你呢？">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-08T07:34:56.000Z">
-<meta property="article:modified_time" content="2021-10-08T07:34:56.796Z">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222133699.png">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222336353.png">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222800164.png">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020223047103.png">
+<meta property="og:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020223157607.png">
+<meta property="article:published_time" content="2021-10-20T14:19:40.000Z">
+<meta property="article:modified_time" content="2021-10-20T14:32:12.666Z">
 <meta property="article:author" content="James·GZL">
+<meta property="article:tag" content="分享">
+<meta property="article:tag" content="手写VIO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222133699.png">
 
 
-<link rel="canonical" href="https://jamesgzl.github.io/2021/10/08/ceres-tutorial-BA/">
+<link rel="canonical" href="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jamesgzl.github.io/2021/10/08/ceres-tutorial-BA/","path":"2021/10/08/ceres-tutorial-BA/","title":"ceres_tutorial_BA"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/","path":"2021/10/20/手写VIO第二章作业/","title":"手写VIO第二章作业"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>ceres_tutorial_BA | James·GZL的博客</title>
+<title>手写VIO第二章作业 | James·GZL的博客</title>
   
 
 
@@ -110,7 +118,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -123,6 +131,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E5%86%99vio%E7%AC%AC%E4%BA%8C%E8%AE%B2%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.</span> <span class="nav-text"> 手写VIO第二讲作业</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#imu%E6%A0%87%E5%AE%9A%E9%83%A8%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text"> IMU标定部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90imu%E4%BB%BF%E7%9C%9F%E6%95%B0%E6%8D%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 生成IMU仿真数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BB%BF%E7%9C%9F%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8Cimu%E6%A0%87%E5%AE%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 对仿真数据进行imu标定</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -209,7 +218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jamesgzl.github.io/2021/10/08/ceres-tutorial-BA/">
+    <link itemprop="mainEntityOfPage" href="https://jamesgzl.github.io/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/ME.jpg">
@@ -222,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ceres_tutorial_BA
+          手写VIO第二章作业
         </h1>
 
         <div class="post-meta-container">
@@ -232,13 +241,24 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-10-08 15:34:56" itemprop="dateCreated datePublished" datetime="2021-10-08T15:34:56+08:00">2021-10-08</time>
+      <time title="创建时间：2021-10-20 22:19:40 / 修改时间：22:32:12" itemprop="dateCreated datePublished" datetime="2021-10-20T22:19:40+08:00">2021-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SLAM/" itemprop="url" rel="index"><span itemprop="name">SLAM</span></a>
+        </span>
     </span>
 
   
 </div>
 
+            <div class="post-description">我爱VIO，你呢？</div>
         </div>
       </header>
 
@@ -246,7 +266,38 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="手写vio第二讲作业"><a class="markdownIt-Anchor" href="#手写vio第二讲作业"></a> 手写VIO第二讲作业</h1>
+<h2 id="imu标定部分"><a class="markdownIt-Anchor" href="#imu标定部分"></a> IMU标定部分</h2>
+<h3 id="生成imu仿真数据"><a class="markdownIt-Anchor" href="#生成imu仿真数据"></a> 生成IMU仿真数据</h3>
+<ul>
+<li>方式一：<code>vio_data_simulation-ros_version</code></li>
+</ul>
+<p>这个方式在ROS环境下进行操作，这个pkg里面有两个主要的函数</p>
+<ol>
+<li>gener_alldata.cpp：用于生成rosbag文件</li>
+<li>gener_alldata_txt.cpp：用于生成txt文件，也是记录数据，只不过变成ttx而已，是一个道理</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir catkin_ws &amp;&amp; <span class="built_in">cd</span> catkin_ws</span><br><span class="line">mkdir src &amp;&amp; <span class="built_in">cd</span> src</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/HeYijia/vio_data_simulation</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">catkin_make</span><br></pre></td></tr></table></figure>
+<p>通过上面这个东西，我们就已经把这个pkg给编译好了，接下来使用它就ok了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> catkin_ws</span><br><span class="line"><span class="built_in">source</span> devel/setup.bash</span><br><span class="line"><span class="comment"># 这个是生成rosbag</span></span><br><span class="line">rosrun vio_data_simulation vio_data_simulation_node</span><br><span class="line"><span class="comment"># 这个是生成txt</span></span><br><span class="line">rosrun vio_data_simulation vio_data_simulation_node_txt</span><br></pre></td></tr></table></figure>
+<p>提示一下吧，就是关于数据生成的路径，如果你想要修改的话，看这里</p>
+<img src="/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222133699.png" class="" title="image-20211020222133699">
+<p>之后你就会发现两个文件会乖乖地出现在这里等着你啦！</p>
+<img src="/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222336353.png" class="" title="image-20211020222336353">
+<ul>
+<li>方式二：<code>vio_data_simulation</code></li>
+</ul>
+<p>关于这个东西，他是用cmake写的，没有用<strong>ROS</strong>，所以非常符合我的喜好哈哈哈，毕竟ros里面emmmm 也可能是我用的少吧</p>
+<p>开发者非常贴心地给我们提供了<code>build.sh</code>文件，主要赋予它执行权限，然后运行就可以了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ./build.sh</span><br><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
+<p>然后我们会发现找不到可执行文件哈哈哈哈！这个时候不要慌张，去看看CMakeLists是咋写的就可以找到了</p>
+<img src="/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020222800164.png" class="" title="image-20211020222800164">
+<p>原来如此，他是把executalbe的输出目录定位到了源文件目录的/bin文件夹中，因为我们去点开bin文件夹</p>
+<img src="/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020223047103.png" class="" title="image-20211020223047103">
+<p>它就在这里，之后我们就在当前文件夹下打开终端，去运行！就会蹦出来这么一堆东西！</p>
+<img src="/2021/10/20/%E6%89%8B%E5%86%99VIO%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%BD%9C%E4%B8%9A/image-20211020223157607.png" class="" title="image-20211020223157607">
+<h3 id="对仿真数据进行imu标定"><a class="markdownIt-Anchor" href="#对仿真数据进行imu标定"></a> 对仿真数据进行imu标定</h3>
+
     </div>
 
     
@@ -254,19 +305,20 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E4%BA%AB/" rel="tag"># 分享</a>
+              <a href="/tags/%E6%89%8B%E5%86%99VIO/" rel="tag"># 手写VIO</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/10/08/TSDF%E5%9C%B0%E5%9B%BE/" rel="prev" title="TSDF地图">
-                  <i class="fa fa-chevron-left"></i> TSDF地图
+                <a href="/2021/10/20/%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%87%A0%E4%BD%95%E7%90%86%E8%A7%A3/" rel="prev" title="最小二乘的几何理解">
+                  <i class="fa fa-chevron-left"></i> 最小二乘的几何理解
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/10/09/%E5%8F%8C%E7%9B%AE%E5%8C%B9%E9%85%8DSGBM%E8%AE%A1%E7%AE%97%E8%A7%86%E5%B7%AE/" rel="next" title="双目匹配SGBM计算视差">
-                  双目匹配SGBM计算视差 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
